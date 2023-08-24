@@ -51,6 +51,7 @@ async function run() {
         labels: labels,
       });
       core.debug(JSON.stringify(result));
+      console.log(`Added labels to #${number}: ${labels.join(", ")}`);
     }
   } catch (error) {
     core.setFailed(error.message);
