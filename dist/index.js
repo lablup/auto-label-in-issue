@@ -9639,6 +9639,18 @@ async function run() {
     );
     const milestones = [];
     for (const closing_issue_number of closing_issue_numbers) {
+      // milestone
+      const milestone = await octokit.rest.issues.get({
+        owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
+        repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
+        issue_number: closing_issue_number,
+      });
+      console.log(`Milestone of #${closing_issue_number}: ${milestone.data.milestone}`);
+      console.log(milestone);
+      if (milestone.data.milestone !== null) {
+        milestones.push(milestone.data.milestone);
+      }
+
       // labels
       const issue_labels = await octokit.rest.issues.listLabelsOnIssue({
         owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
@@ -9657,18 +9669,11 @@ async function run() {
       });
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(JSON.stringify(result));
       console.log(`Added labels to #${number}: ${labels.join(", ")}`);
-
-      // milestone
-      const milestone = await octokit.rest.issues.get({
-        owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
-        repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
-        issue_number: closing_issue_number,
-      });
-      if (milestone.data.milestone !== null) {
-        milestones.push(milestone.data.milestone);
-      }
     }
-    if (milestones.every((val, i, arr) => val === arr[0]) && milestones.length > 0) {
+    if (milestones.length === 0) {
+      console.log("No milestone");
+    }
+    else if (milestones.every((val, i, arr) => val === arr[0])) {
       const result = await octokit.rest.issues.update({
         owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
         repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
