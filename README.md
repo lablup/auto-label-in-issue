@@ -12,12 +12,9 @@ on:
   pull_request:
     types: [labeled, unlabeled, opened, synchronize, reopened]
 
-permissions:
-  pull-requests: write
-
 jobs:
   auto-label:
     runs-on: ubuntu-latest
     steps:
-      - uses: Yaminyam/auto-label-in-issue@1.1.0
+      - uses: Yaminyam/auto-label-in-issue@1.5.0
 ```
