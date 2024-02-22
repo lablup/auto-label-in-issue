@@ -60,9 +60,9 @@ async function run() {
         owner: context.repo.owner,
         repo: context.repo.repo,
         issue_number: closing_issue_number,
-      }).milestone;
-      if (milestone !== null) {
-        milestones.push(milestone);
+      });
+      if (milestone.data.milestone !== null) {
+        milestones.push(milestone.data.milestone);
       }
     }
     if (milestones.every((val, i, arr) => val === arr[0])) {
@@ -70,10 +70,12 @@ async function run() {
         owner: context.repo.owner,
         repo: context.repo.repo,
         issue_number: number,
-        milestone: milestones[0],
+        milestone: milestones[0].number,
       });
       core.debug(JSON.stringify(result));
       console.log(`Added milestone to #${number}: ${milestones[0].title}`);
+    } else {
+      console.log(`Milestones are different: ${milestones.map((milestone) => milestone.title).join(", ")}`);
     }
   } catch (error) {
     core.setFailed(error.message);

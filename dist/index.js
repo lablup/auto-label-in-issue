@@ -9663,9 +9663,9 @@ async function run() {
         owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
         repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
         issue_number: closing_issue_number,
-      }).milestone;
-      if (milestone !== null) {
-        milestones.push(milestone);
+      });
+      if (milestone.data.milestone !== null) {
+        milestones.push(milestone.data.milestone);
       }
     }
     if (milestones.every((val, i, arr) => val === arr[0])) {
@@ -9673,10 +9673,12 @@ async function run() {
         owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
         repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
         issue_number: number,
-        milestone: milestones[0],
+        milestone: milestones[0].number,
       });
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(JSON.stringify(result));
       console.log(`Added milestone to #${number}: ${milestones[0].title}`);
+    } else {
+      console.log(`Milestones are different: ${milestones.map((milestone) => milestone.title).join(", ")}`);
     }
   } catch (error) {
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(error.message);
