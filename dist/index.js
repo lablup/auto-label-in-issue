@@ -9645,8 +9645,7 @@ async function run() {
         repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
         issue_number: closing_issue_number,
       });
-      console.log(`Milestone of #${closing_issue_number}: ${milestone.data.milestone}`);
-      console.log(milestone);
+      console.log(`Milestone of #${closing_issue_number}: ${milestone.data.milestone.title}`);
       if (milestone.data.milestone !== null) {
         milestones.push(milestone.data.milestone);
       }
