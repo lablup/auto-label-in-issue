@@ -65,7 +65,7 @@ async function run() {
         milestones.push(milestone.data.milestone);
       }
     }
-    if (milestones.every((val, i, arr) => val === arr[0])) {
+    if (milestones.every((val, i, arr) => val === arr[0]) && milestones.length > 0) {
       const result = await octokit.rest.issues.update({
         owner: context.repo.owner,
         repo: context.repo.repo,
