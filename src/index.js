@@ -34,7 +34,9 @@ async function run() {
     const closing_issue_numbers = closing_issue_number_request.repository.pullRequest.closingIssuesReferences.edges.map(
       (edge) => edge.node.number
     );
+    const milestones = [];
     for (const closing_issue_number of closing_issue_numbers) {
+      // labels
       const issue_labels = await octokit.rest.issues.listLabelsOnIssue({
         owner: context.repo.owner,
         repo: context.repo.repo,
@@ -52,6 +54,26 @@ async function run() {
       });
       core.debug(JSON.stringify(result));
       console.log(`Added labels to #${number}: ${labels.join(", ")}`);
+
+      // milestone
+      const milestone = await octokit.rest.issues.get({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        issue_number: closing_issue_number,
+      }).milestone;
+      if (milestone !== null) {
+        milestones.push(milestone);
+      }
+    }
+    if (milestones.every((val, i, arr) => val === arr[0])) {
+      const result = await octokit.rest.issues.update({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        issue_number: number,
+        milestone: milestones[0],
+      });
+      core.debug(JSON.stringify(result));
+      console.log(`Added milestone to #${number}: ${milestones[0].title}`);
     }
   } catch (error) {
     core.setFailed(error.message);
