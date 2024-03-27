@@ -42,9 +42,9 @@ async function run() {
         repo: context.repo.repo,
         issue_number: closing_issue_number,
       });
-      console.log(`Milestone of #${closing_issue_number}: ${milestone.data.milestone.title}`);
       if (milestone.data.milestone !== null) {
         milestones.push(milestone.data.milestone);
+        console.log(`Milestone of #${closing_issue_number}: ${milestone.data.milestone.title}`);
       }
 
       // labels
